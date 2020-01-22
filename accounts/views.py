@@ -12,9 +12,9 @@ from .forms import SignupForm
 #         form = SignupForm(request.POST)
 #         if form.is_valid():
 #             user = form.save() #회원가입 완료된 상황
-#             #로그인 처리
-#             auth_login(request, user)
-#             return redirect('profile')
+#             auth_login(request, user) #로그인 처리
+#             next_url = request.GET.get('next') or 'profile'
+#             return redirect(next_url)
 #     else:
 #         form = SignupForm()
 #     return render(request, 'accounts/signup.html', {
@@ -28,7 +28,8 @@ class SignupView(CreateView):
     template_name = 'accounts/signup.html'
 
     def get_success_url(self):
-        return resolve_url('profile') #문자로 날려주어야 하기 때문에 redirect 함수 대신 사용용
+        next_url = self.request.GET.get('next') or 'profile'
+        return resolve_url(next_url) #문자로 날려주어야 하기 때문에 redirect 함수 대신 사용용
 
     def form_valid(self, form):
         user = form.save()
