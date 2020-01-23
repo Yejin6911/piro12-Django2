@@ -8,4 +8,5 @@ urlpatterns = [
     #path('accounts/', include('django.contrib.auth.urls')),
     path('blog/', include('blog.urls')),
     path('',lambda req: redirect('blog:post_list'), name='root'), #URL reverse
+
 ]

@@ -3,7 +3,10 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth.views import PasswordChangeView
+from django.core.checks import messages
 from django.shortcuts import render, redirect, resolve_url
+from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from .forms import SignupForm
 
@@ -51,3 +54,9 @@ def profile(request): #setting.LOGIN_URL로 로그아웃일때는 이동
     return render(request, 'accounts/profile.html')
 
 
+class MyPasswordChangeView(PasswordChangeView):
+    success_url = reverse_lazy('profile')
+    template_name = 'accounts/password_change_form.html'
+
+    def form_valid(self, form):
+        messages.info(self.request, '암호 변경을 완료했습니다.')
